@@ -110,13 +110,21 @@ const minus = function (num1, num2 = 0) {
 // the function should take a rest parameter named nums
 // the function should return the sum of all numbers passed in
 // call the function with 1, 2, 3, 4, 5
-const sumRest = function (...nums) {};
+const sumRest = function (...nums) {
+  let sum = 0;
+  for (let num of nums) {
+    sum += num;
+  }
+  return sum;
+};
 
 // create a function named sumSpread
 // the function should take one parameter name nums that is an array
 // Use the spread operator to calculate the sum of all numbers in the array
 // It should use the sumRest function defined above
-const sumSpread = function (nums) {};
+const sumSpread = function (nums) {
+  return sumRest(...nums);
+};
 
 /**
  * Task 7: Closure (idGenerator)
@@ -128,18 +136,23 @@ const sumSpread = function (nums) {};
 function createIdGenerator() {
   // create a variable named id and set it to 0
   // return a function that increments id and returns the new value
+  let id = 0;
+  return function () {
+    id++;
+    return id;
+  };
 }
 
 // create a variable named nextId and set it to the return value of createIdGenerator
+let nextId = createIdGenerator();
 
 // create a variable named id1 and set it to the return value of nextId
-let id1;
-
+let id1 = nextId();
 // create a variable named id2 and set it to the return value of nextId
-let id2;
+let id2 = nextId();
 
 // create a variable named id3 and set it to the return value of nextId
-let id3;
+let id3 = nextId();
 
 /**
  * Task 8: Closure (createGreeter)
@@ -150,15 +163,20 @@ let id3;
 // create a function named createGreeter
 function createGreeter(name) {
   // return a function that logs "Hello, [name]!" to the console
+  return function () {
+    console.log(`Hello, ${name}!`);
+  };
 }
 
 // create a variable named greetJohn and set it to the return value of createGreeter with the name "John"
-
+let greetJohn = createGreeter('John');
 // create a variable named greetJane and set it to the return value of createGreeter with the name "Jane"
+let greetJane = createGreeter('Jane');
 
 // call greetJohn
-
+greetJohn();
 // call greetJane
+greetJane();
 
 /**
  * Task 9: Closure (countDown)
@@ -173,8 +191,10 @@ function createCountdown(start) {
   return function () {
     if (start > 0) {
       // Your code here
+      return start--;
     } else {
       // Your code here
+      return 0;
     }
   };
 }
@@ -191,5 +211,6 @@ function power(base, exponent) {
     return 1;
   } else {
     // Your code here
+    return base * power(base, exponent - 1);
   }
 }
