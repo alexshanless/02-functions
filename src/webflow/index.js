@@ -1,7 +1,15 @@
+import { formatTime } from 'http://127.0.0.1:5500/src/lessons/02-1-functions.js';
+
+console.log(formatTime);
+
 // global variables
 let timerId = 0; // tracks the interval timer
 let startTime = 0; // tracks the start time of the timer
 let elapsed = 0; // tracks the elapsed time
+
+const start = document.querySelector('#start');
+const stop = document.querySelector('#stop');
+const reset = document.querySelector('#reset');
 
 /**
  * Updates the text content of the stopwatch display on the webpage.
@@ -20,8 +28,11 @@ let elapsed = 0; // tracks the elapsed time
  * - This function is designed to interact with the DOM and will update the content of a specific element on the webpage.
  * - The `time` parameter should be a string that represents the time in a format suitable for display.
  */
-let updateTime = function (time) {};
 
+let updateTime = function (time) {
+  let display = document.querySelector('#stopwatch-display');
+  display.textContent = time;
+};
 /**
  * Starts the stopwatch timer.
  *
@@ -37,7 +48,15 @@ let updateTime = function (time) {};
  * - This function uses the `timerId` to track the interval and prevent multiple intervals from being set.
  * - The `startTime` and `elapsed` variables are used to calculate the current time elapsed since the timer started.
  */
-function startTimer() {}
+function startTimer() {
+  if (!timerId) {
+    startTime = Date.now() - elapsed;
+    timerId = setInterval(() => {
+      elapsed = Date.now() - startTime;
+      updateTime(formatTime(Math.floor(elapsed / 1000)));
+    }, 1000);
+  }
+}
 
 /**
  * Stops the stopwatch timer.
@@ -52,7 +71,12 @@ function startTimer() {}
  * Notes:
  * - This function checks if `timerId` is set before trying to stop the timer to prevent errors.
  */
-function stopTimer() {}
+function stopTimer() {
+  if (timerId) {
+    clearInterval(timerId);
+    timerId = null;
+  }
+}
 
 /**
  * Resets the stopwatch timer to zero.
@@ -68,8 +92,15 @@ function stopTimer() {}
  * Notes:
  * - This function will reset the timer regardless of whether it is currently running or stopped.
  */
-function resetTimer() {}
+function resetTimer() {
+  stopTimer();
+  elapsed = 0;
+  updateTime('00:00');
+}
 
 // Selectors
 // listen for clicks on the start, stop, and reset buttons
 // call the appropriate function for each button
+start.addEventListener('click', startTimer);
+stop.addEventListener('click', stopTimer);
+reset.addEventListener('click', resetTimer);

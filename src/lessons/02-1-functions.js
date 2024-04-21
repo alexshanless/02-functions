@@ -14,7 +14,7 @@
  * 4. Concatenate minutes and seconds with a colon (:) to form the time string.
  */
 
-let formatTime = seconds => {
+export let formatTime = seconds => {
   let minutes = Math.floor(seconds / 60);
   let remainingSeconds = seconds % 60;
   minutes = minutes.toString().padStart(2, '0');
